@@ -30,3 +30,25 @@ for (uid, message) in messages:
 
 file_pattern = "/your/pattern/of/choice/*.filetype"
 latest_attachment = next(glob.iglob(file_pattern, recursive=True))
+
+import smtplib
+from email import message
+from os.path
+msg = message.Message()
+receiver = "receiver@email.com"
+subject = "Email Subject"
+body = "Email Body"
+
+msg.add_header('from',username)
+msg.add_header('to',receiver)
+msg.add_header('subject',subject)
+msg.set_payload(body)
+
+server = smtplib.SMTP("smtp.example.com",587) 
+
+server.ehlo()
+server.starttls()
+
+server.login(username, password)
+
+server.send_message(msg, from_addr = username, to_addrs = [receiver])
