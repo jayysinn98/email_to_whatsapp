@@ -59,4 +59,6 @@ server.starttls()
 
 server.login(username, password)
 
-server.send_message(msg, from_addr = username, to_addrs = [receiver])
+receivers = ["receiver1@email", "receiver2@email", "receiver3@email"]
+for receiver in receivers :
+    server.send_message(msg, from_addr = username, to_addrs = [receiver])
