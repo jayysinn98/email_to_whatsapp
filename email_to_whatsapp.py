@@ -32,18 +32,28 @@ file_pattern = "/your/pattern/of/choice/*.filetype"
 latest_attachment = next(glob.iglob(file_pattern, recursive=True))
 
 import smtplib
-from email import message
-msg = message.Message()
-receiver = "receiver@email.com"
-subject = "Email Subject"
-body = "Email Body"
+from os.path import basename
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+from email.mime.application import MIMEApplication
 
-msg.add_header('from',username)
-msg.add_header('to',receiver)
-msg.add_header('subject',subject)
-msg.set_payload(body)
+msg = MIMEMultipart()
+receiver = "e0424688@u.nus.edu"
+subject = "Testing out smtplib"
+content = "asdsadas"
 
-server = smtplib.SMTP("smtp.example.com",587) 
+msg['From'] = username
+msg['To'] = receiver
+msg['Subject'] = subject
+body = MIMEText(content, 'plain')
+msg.attach(body)
+
+filename = 'filename' #Must be of the same directory
+part = MIMEApplication(attachment.get('content').read(), Name=basename(filename))
+part['Content-Disposition'] = 'attachment; filename="{}"'.format(basename(filename))
+msg.attach(part)
+
+server = smtplib.SMTP("smtp.office365.com",587)
 
 server.ehlo()
 server.starttls()
