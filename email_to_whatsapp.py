@@ -33,7 +33,6 @@ latest_attachment = next(glob.iglob(file_pattern, recursive=True))
 
 import smtplib
 from email import message
-from os.path
 msg = message.Message()
 receiver = "receiver@email.com"
 subject = "Email Subject"
