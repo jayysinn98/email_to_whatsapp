@@ -1,3 +1,4 @@
+################# SENDING EMAIL WITH ATTACHMENT FROM SPECIFIC SENDER #################
 #pip install imbox
 import glob
 import os
@@ -38,9 +39,9 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.application import MIMEApplication
 
 msg = MIMEMultipart()
-receiver = "e0424688@u.nus.edu"
-subject = "Testing out smtplib"
-content = "asdsadas"
+receiver = "receiver@email"
+subject = "subject"
+content = "content"
 
 msg['From'] = username
 msg['To'] = receiver
@@ -62,3 +63,44 @@ server.login(username, password)
 receivers = ["receiver1@email", "receiver2@email", "receiver3@email"]
 for receiver in receivers :
     server.send_message(msg, from_addr = username, to_addrs = [receiver])
+
+################# CONNECTING TO GOOGLE SHEETS #################
+#pip install gspread
+#pip install oauth2client
+
+import gspread
+from oauth2client.service_account import ServiceAccountCredentials
+import datetime
+from datetime import date
+
+scope = ["https://www.googleapis.com/auth/spreadsheets", "https://www.googleapis.com/auth/drive.file", "https://www.googleapis.com/auth/drive"]
+creds = ServiceAccountCredentials.from_json_keyfile_name('json_file',scope)
+client = gspread.authorize(creds)
+spreadsheet = client.open('spreadsheet_name')
+sheet = spreadsheet.worksheet('sheet_name')
+
+
+for record in sheet.get_all_records():
+    #matching record to a specific date
+    if record['Date'] == (date.today() + datetime.timedelta(days = 0)).strftime("%d %b"): 
+        var1 = record['var1']
+        var2 = record['var2']
+        var3 = record['var3']
+        var4 = record['var4']
+        var5 = record['var5']
+
+################# SENDING THE WHATSAPP MESSAGE WITH INFO FROM GOOGLE SHEETS #################
+import pywhatkit
+
+template = """
+Variable 1 is {}
+Variable 2 is {}
+Variable 3 is {}
+Variable 4 is {}
+Variable 5 is {}
+""".format(var1, var2, var3, var4, var5)
+
+#Specify message time here... ridiculous I can't send instantly lol
+#maybe get current hour and minutes, send +1 minute
+#for now, 12am is the scheduled sending time
+pywhatkit.sendwhatmsg_to_group('Ch5pKpaMfodLDuAY88x80k',template,time_hour = 0,time_min = 0, wait_time = 7, tab_close = True, close_time = 2)
