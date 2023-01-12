@@ -48,9 +48,8 @@ msg['Subject'] = subject
 body = MIMEText(content, 'plain')
 msg.attach(body)
 
-filename = 'filename' #Must be of the same directory
-part = MIMEApplication(attachment.get('content').read(), Name=basename(filename))
-part['Content-Disposition'] = 'attachment; filename="{}"'.format(basename(filename))
+part = MIMEApplication(attachment.get('content').read(), Name=basename(latest_attachment))
+part['Content-Disposition'] = 'attachment; filename="{}"'.format(basename(latest_attachment))
 msg.attach(part)
 
 server = smtplib.SMTP("smtp.office365.com",587)
